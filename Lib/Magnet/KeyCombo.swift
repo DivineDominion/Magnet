@@ -12,7 +12,7 @@ import Cocoa
 import Carbon
 import Sauce
 
-public final class KeyCombo: NSObject, NSCopying, NSCoding, Codable {
+open class KeyCombo: NSObject, NSCopying, NSCoding, Codable {
 
     // MARK: - Properties
     public let key: Key
@@ -104,7 +104,7 @@ public final class KeyCombo: NSObject, NSCopying, NSCoding, Codable {
     }
 
     // MARK: - NSCoding
-    public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         self.doubledModifiers = aDecoder.decodeBool(forKey: CodingKeys.doubledModifiers.rawValue)
         self.modifiers = aDecoder.decodeInteger(forKey: CodingKeys.modifiers.rawValue)
         guard !doubledModifiers else {
@@ -136,7 +136,7 @@ public final class KeyCombo: NSObject, NSCopying, NSCoding, Codable {
     }
 
     // MARK: - Codable
-    public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.doubledModifiers = try container.decode(Bool.self, forKey: .doubledModifiers)
         self.modifiers = try container.decode(Int.self, forKey: .modifiers)
@@ -187,6 +187,6 @@ public final class KeyCombo: NSObject, NSCopying, NSCoding, Codable {
 }
 
 // MARK: - Error
-public extension KeyCombo {
-    struct InitializeError: Error {}
+extension KeyCombo {
+    public struct InitializeError: Error {}
 }
